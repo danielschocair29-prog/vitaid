@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>vitaid — Sua saúde, centralizada</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --dark:       #0D0F14;
+  --dark-2:     #13161E;
+  --dark-3:     #1A1E28;
+  --light:      #FAFAF8;
+  --light-2:    #F2F2EF;
+  --border-d:   rgba(255,255,255,0.07);
+  --border-l:   #E5E3DC;
+  --muted-d:    rgba(255,255,255,0.4);
+  --muted-l:    #7A7A72;
+  --green:      #00E5A0;
+  --cyan:       #00B4D8;
+  --green-dk:   #00C882;
+  --cyan-dk:    #0099C4;
+  --grad:       linear-gradient(120deg, #00E5A0, #00B4D8);
+  --grad-dk:    linear-gradient(120deg, #00C882, #0099C4);
+  --font:       'Plus Jakarta Sans', sans-serif;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font); background: var(--dark); color: #fff; overflow-x: hidden; }
+
+/* ── LOGO ── */
+.vt-logo {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  line-height: 1;
+  display: inline-block;
+  white-space: nowrap;
+}
+.vt-vita { color: #ffffff; }
+.vt-id {
+  color: transparent;
+  background: linear-gradient(120deg, #00E5A0, #00B4D8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  /* padding compensa o corte do ascendente */
+  display: inline-block;
+  padding: 0.12em 0.05em 0 0;
+  margin-top: -0.12em;
+}
+
+/* ── LOGO MARK ── */
+.logo-mark {
+  font-weight: 800; line-height: 1;
+  color: #fff; text-decoration: none; display: inline-flex; align-items: baseline;
+}
+.logo-mark.dark-version { color: var(--dark); }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 0 60px; height: 68px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(13,15,20,0.88); backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-d);
+  transition: background .3s;
+  overflow: visible;
+}
+.nav-links { display: flex; gap: 36px; align-items: center; }
+.nav-links a { font-size: 13px; font-weight: 500; color: var(--muted-d); text-decoration: none; transition: color .2s; }
+.nav-links a:hover { color: #fff; }
+.nav-cta {
+  padding: 9px 22px; background: var(--grad); color: var(--dark) !important;
+  font-weight: 700 !important; border-radius: 100px; font-size: 13px !important;
+  transition: opacity .2s !important;
+}
+.nav-cta:hover { opacity: .85; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh; background: var(--dark);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 120px 48px 100px; position: relative; overflow: hidden;
+}
+.hero-glow {
+  position: absolute; border-radius: 50%; pointer-events: none; filter: blur(100px);
+}
+.glow1 { width: 600px; height: 600px; background: rgba(0,229,160,0.08); top: -100px; right: -100px; }
+.glow2 { width: 500px; height: 500px; background: rgba(0,180,216,0.07); bottom: -100px; left: -80px; }
+.glow3 { width: 400px; height: 400px; background: rgba(0,229,160,0.05); top: 40%; left: 50%; transform: translate(-50%,-50%); }
+
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 8px; margin-bottom: 52px;
+  font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--green); animation: fadeUp .7s both;
+}
+.hero-tag span { width: 28px; height: 1px; background: var(--green); opacity: .4; }
+
+.hero-logo-placeholder { display: none; }
+
+.hero-headline {
+  font-size: 52px; font-weight: 700; color: #fff;
+  line-height: 1.15; letter-spacing: -1.5px; max-width: 760px;
+  margin: 0 auto 24px; animation: fadeUp .7s .16s both;
+}
+.hero-headline .hl {
+  background: var(--grad);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+.hero-sub {
+  font-size: 17px; font-weight: 400; color: var(--muted-d);
+  max-width: 480px; margin: 0 auto 56px; line-height: 1.75;
+  animation: fadeUp .7s .24s both;
+}
+.hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; animation: fadeUp .7s .32s both; }
+
+.btn-grad {
+  padding: 15px 36px; background: var(--grad); color: var(--dark);
+  font-family: var(--font); font-size: 14px; font-weight: 700;
+  border: none; border-radius: 100px; cursor: pointer; text-decoration: none;
+  transition: all .25s; display: inline-flex; align-items: center; gap: 8px;
+  box-shadow: 0 8px 32px rgba(0,229,160,0.2);
+}
+.btn-grad:hover { transform: translateY(-2px); box-shadow: 0 16px 48px rgba(0,229,160,0.3); }
+
+.btn-outline-d {
+  padding: 15px 36px; background: transparent; color: rgba(255,255,255,.65);
+  font-family: var(--font); font-size: 14px; font-weight: 500;
+  border: 1px solid rgba(255,255,255,0.14); border-radius: 100px;
+  cursor: pointer; text-decoration: none; transition: all .25s;
+}
+.btn-outline-d:hover { border-color: rgba(255,255,255,.3); color: #fff; }
+
+.hero-line { position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(0,229,160,0.3), transparent); }
+
+/* ── SEÇÕES ── */
+.sec-dark  { background: var(--dark);   padding: 110px 60px; border-top: 1px solid var(--border-d); }
+.sec-dark2 { background: var(--dark-2); padding: 110px 60px; border-top: 1px solid var(--border-d); }
+.sec-dark3 { background: var(--dark-3); padding: 110px 60px; border-top: 1px solid var(--border-d); }
+.sec-light  { background: var(--light);  padding: 110px 60px; border-top: 1px solid var(--border-l); }
+.sec-light2 { background: var(--light-2);padding: 110px 60px; border-top: 1px solid var(--border-l); }
+
+.inner { max-width: 1140px; margin: 0 auto; }
+
+.eyebrow {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--green); margin-bottom: 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+.eyebrow::before { content: ''; width: 20px; height: 1.5px; background: var(--green); opacity: .5; }
+.eyebrow.light-version { color: var(--green-dk); }
+.eyebrow.light-version::before { background: var(--green-dk); }
+
+.sec-title {
+  font-size: 46px; font-weight: 800; line-height: 1.1; letter-spacing: -1.5px;
+  color: #fff; margin-bottom: 18px; max-width: 620px;
+  border-left: 3px solid var(--green); padding-left: 20px;
+}
+.sec-title.light-version { color: var(--dark); border-left-color: var(--green-dk); }
+.sec-title .hl { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.sec-title .hl-dk { background: var(--grad-dk); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+.sec-sub {
+  font-size: 16px; font-weight: 400; color: var(--muted-d);
+  line-height: 1.8; max-width: 480px; margin-bottom: 60px; padding-left: 24px;
+}
+.sec-sub.light-version { color: var(--muted-l); }
+
+/* ── PROBLEMA ── */
+.prob-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border-d); border: 1px solid var(--border-d); }
+.prob-cell { background: var(--dark); padding: 48px 36px; transition: background .3s; }
+.prob-cell:hover { background: var(--dark-2); }
+.prob-num { font-size: 72px; font-weight: 800; letter-spacing: -3px; line-height: 1; margin-bottom: 14px; }
+.prob-num.accent { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.prob-title { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+.prob-desc { font-size: 13px; font-weight: 400; color: var(--muted-d); line-height: 1.7; }
+
+/* ── PRODUTOS ── */
+.prod-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 60px; }
+.prod-card {
+  border: 1px solid var(--border-d); padding: 44px; background: var(--dark-2);
+  position: relative; overflow: hidden; border-radius: 2px;
+  transition: border-color .3s, background .3s;
+}
+.prod-card:hover { border-color: rgba(0,229,160,0.3); background: var(--dark-3); }
+.prod-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--grad); }
+.prod-num { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 22px; }
+.prod-name { font-size: 32px; font-weight: 800; letter-spacing: -1px; color: #fff; line-height: 1.1; margin-bottom: 14px; border-left: 3px solid rgba(0,229,160,0.4); padding-left: 14px; }
+.prod-tagline { font-size: 14px; font-weight: 400; color: var(--muted-d); line-height: 1.75; margin-bottom: 32px; max-width: 380px; }
+.prod-feats { display: flex; flex-direction: column; gap: 10px; margin-bottom: 36px; }
+.prod-feat { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.7); }
+.feat-check { width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0; background: rgba(0,229,160,0.12); border: 1px solid rgba(0,229,160,0.3); display: flex; align-items: center; justify-content: center; font-size: 8px; color: var(--green); }
+.prod-price { display: inline-flex; padding: 8px 18px; border: 1px solid rgba(0,229,160,0.2); font-size: 12px; font-weight: 600; color: var(--green); letter-spacing: .04em; }
+
+/* ── MOCKUPS ── */
+.mock-row { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; margin-bottom: 110px; }
+.mock-row:last-child { margin-bottom: 0; }
+.mock-row.rev { direction: rtl; }
+.mock-row.rev > * { direction: ltr; }
+.mock-step { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--green); margin-bottom: 18px; }
+.mock-title { font-size: 38px; font-weight: 800; letter-spacing: -1.2px; color: #fff; line-height: 1.15; margin-bottom: 14px; border-left: 3px solid var(--green); padding-left: 18px; }
+.mock-desc { font-size: 15px; font-weight: 400; color: var(--muted-d); line-height: 1.8; }
+
+.phone-wrap { display: flex; justify-content: center; }
+.phone {
+  width: 255px; height: 510px; border-radius: 34px;
+  background: var(--dark-2); border: 1px solid var(--border-d);
+  box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,229,160,0.1);
+  overflow: hidden; position: relative; flex-shrink: 0;
+}
+.phone-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 90px; height: 26px; background: var(--dark); border-radius: 0 0 16px 16px; z-index: 10; }
+.phone-body { position: absolute; inset: 0; display: flex; flex-direction: column; font-family: var(--font); }
+
+/* Phone: Summary */
+.ph-header { background: var(--dark); padding: 40px 16px 14px; border-bottom: 1px solid var(--border-d); }
+.ph-label { font-size: 7.5px; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.3); margin-bottom: 3px; }
+.ph-name { font-size: 17px; font-weight: 800; letter-spacing: -.3px; color: #fff; }
+.ph-meta { font-size: 8.5px; color: rgba(255,255,255,.35); margin-top: 1px; }
+
+.ph-alert { margin: 9px 14px 0; padding: 8px 11px; background: rgba(220,60,60,0.12); border-left: 2px solid #E05050; }
+.ph-alert-label { font-size: 7px; letter-spacing: .1em; text-transform: uppercase; color: #E08080; margin-bottom: 2px; font-weight: 700; }
+.ph-alert-text { font-size: 8.5px; color: rgba(224,128,128,.85); }
+
+.ph-player { margin: 9px 14px 0; padding: 12px; background: rgba(0,229,160,0.07); border: 1px solid rgba(0,229,160,0.15); }
+.ph-player-label { font-size: 7px; letter-spacing: .12em; text-transform: uppercase; color: var(--green); margin-bottom: 7px; display: flex; align-items: center; gap: 4px; font-weight: 700; }
+.ph-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--green); animation: blink 1.5s infinite; }
+.ph-wave { display: flex; gap: 2px; align-items: center; height: 22px; margin-bottom: 5px; }
+.ph-bar { width: 2px; background: rgba(0,229,160,0.2); border-radius: 1px; }
+.ph-bar.active { background: var(--green); animation: wave .8s infinite ease-in-out; }
+.ph-progress { height: 1.5px; background: rgba(255,255,255,0.08); margin-bottom: 3px; }
+.ph-prog-fill { height: 100%; background: var(--grad); width: 60%; }
+.ph-times { display: flex; justify-content: space-between; font-size: 7px; color: rgba(255,255,255,.25); }
+.ph-controls { display: flex; justify-content: center; gap: 8px; margin-top: 7px; }
+.ph-ctrl { width: 26px; height: 26px; border-radius: 50%; background: rgba(255,255,255,.05); display: flex; align-items: center; justify-content: center; font-size: 9px; color: #fff; cursor: pointer; }
+.ph-ctrl.play { width: 32px; height: 32px; background: var(--grad); color: var(--dark); font-size: 11px; }
+
+.ph-cards { padding: 0 14px; display: flex; flex-direction: column; gap: 7px; margin-top: 8px; }
+.ph-card { padding: 9px 10px; background: rgba(255,255,255,.03); border-left: 2px solid rgba(0,229,160,.35); }
+.ph-card-label { font-size: 7px; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.3); margin-bottom: 2px; font-weight: 600; }
+.ph-card-val { font-size: 9.5px; color: rgba(255,255,255,.7); line-height: 1.4; }
+.ph-tag { display: inline-flex; padding: 1.5px 6px; border-radius: 8px; font-size: 7px; margin: 1px; font-weight: 600; }
+.t-warn { background: rgba(220,120,40,.15); color: #E0A060; border: 1px solid rgba(220,120,40,.25); }
+.t-ok   { background: rgba(0,200,100,.12);  color: #40C870; border: 1px solid rgba(0,200,100,.25); }
+
+/* Phone: RG */
+.ph-rg-screen { background: var(--light); }
+.ph-rg-header { background: linear-gradient(120deg, #00C882, #0099C4); padding: 40px 16px 18px; }
+.ph-rg-brand { font-size: 9px; font-weight: 700; letter-spacing: .18em; color: rgba(255,255,255,.65); margin-bottom: 8px; }
+.ph-rg-name { font-size: 18px; font-weight: 800; letter-spacing: -.4px; color: #fff; }
+.ph-rg-id { font-size: 7.5px; letter-spacing: .12em; color: rgba(255,255,255,.55); margin-top: 1px; }
+.ph-rg-meta { display: flex; gap: 14px; margin-top: 10px; }
+.ph-rg-mi { font-size: 7px; color: rgba(255,255,255,.55); }
+.ph-rg-mi span { display: block; font-size: 9.5px; font-weight: 700; color: #fff; margin-top: 1px; }
+.ph-rg-btn { margin: 12px 14px 0; padding: 9px; background: var(--green-dk); border: none; cursor: pointer; width: calc(100% - 28px); color: #fff; font-family: var(--font); font-size: 9.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; border-radius: 6px; }
+.ph-rg-secs { padding: 0 14px; display: flex; flex-direction: column; gap: 7px; margin-top: 8px; }
+.ph-rg-alert { background: #fff; border-left: 2px solid #E05050; padding: 7px 10px; border-radius: 0 5px 5px 0; }
+.ph-rg-ak { font-size: 7px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #E05050; margin-bottom: 1px; }
+.ph-rg-av { font-size: 10px; font-weight: 800; color: #E05050; }
+.ph-rg-sec { background: #fff; padding: 8px 10px; border-radius: 5px; }
+.ph-rg-sec-title { font-size: 7.5px; font-weight: 700; color: var(--dark); margin-bottom: 4px; letter-spacing: .06em; text-transform: uppercase; }
+.ph-rg-row { display: flex; justify-content: space-between; font-size: 8.5px; padding: 1.5px 0; color: #666; }
+.ph-rg-row span { color: var(--dark); font-weight: 600; }
+
+/* ── FILOSOFIA ── */
+.phil-quote { font-size: 44px; font-weight: 800; letter-spacing: -1.5px; color: #fff; line-height: 1.2; max-width: 680px; margin: 0 0 14px; border-left: 4px solid var(--green); padding-left: 32px; }
+.phil-quote em { font-style: italic; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.phil-attr { font-size: 10px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.25); margin-bottom: 60px; padding-left: 36px; }
+.phil-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border-d); border: 1px solid var(--border-d); }
+.phil-cell { background: var(--dark-2); padding: 36px 28px; }
+.phil-icon { font-size: 22px; margin-bottom: 14px; }
+.phil-title { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 7px; }
+.phil-desc { font-size: 12.5px; font-weight: 400; color: var(--muted-d); line-height: 1.7; }
+
+/* ── STATS ── */
+.stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--border-d); border: 1px solid var(--border-d); max-width: 1140px; margin: 0 auto; }
+.stat-cell { background: var(--dark-2); padding: 44px 28px; }
+.stat-num { font-size: 60px; font-weight: 800; letter-spacing: -2.5px; line-height: 1; color: #fff; margin-bottom: 8px; }
+.stat-num .unit { font-size: 28px; letter-spacing: -1px; }
+.stat-label { font-size: 12.5px; font-weight: 400; color: var(--muted-d); line-height: 1.5; }
+
+/* ── PARA QUEM ── */
+.who-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 60px; }
+.who-card { padding: 44px; border: 1px solid var(--border-l); background: var(--light); position: relative; overflow: hidden; transition: border-color .3s; }
+.who-card:hover { border-color: var(--green-dk); }
+.who-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--grad-dk); }
+.who-role { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--green-dk); margin-bottom: 18px; }
+.who-title { font-size: 24px; font-weight: 800; letter-spacing: -.6px; color: var(--dark); margin-bottom: 22px; line-height: 1.2; border-left: 3px solid var(--green-dk); padding-left: 14px; }
+.who-list { display: flex; flex-direction: column; gap: 10px; }
+.who-item { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; font-weight: 400; color: var(--muted-l); line-height: 1.55; }
+.who-arr { color: var(--green-dk); flex-shrink: 0; margin-top: 1px; font-size: 12px; font-weight: 700; }
+
+/* ── PREÇOS ── */
+.price-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 860px; margin: 60px auto 0; }
+.price-card { border: 1px solid var(--border-d); padding: 44px; background: var(--dark-2); position: relative; overflow: hidden; transition: border-color .3s; }
+.price-card:hover { border-color: rgba(0,229,160,.25); }
+.price-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--grad); }
+.price-for { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--green); margin-bottom: 14px; }
+.price-prod { font-size: 22px; font-weight: 800; letter-spacing: -.5px; color: #fff; margin-bottom: 10px; border-left: 2px solid rgba(0,229,160,.35); padding-left: 12px; }
+.price-val { font-size: 48px; font-weight: 800; letter-spacing: -2px; color: #fff; line-height: 1; margin-bottom: 3px; }
+.price-val small { font-size: 20px; font-weight: 600; letter-spacing: -.5px; }
+.price-period { font-size: 12px; font-weight: 400; color: var(--muted-d); margin-bottom: 28px; }
+.price-feats { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+.price-feat { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 400; color: rgba(255,255,255,.65); }
+.price-feat::before { content: '✓'; color: var(--green); font-weight: 700; font-size: 11px; flex-shrink: 0; }
+.price-btn { width: 100%; padding: 14px; background: var(--grad); color: var(--dark); font-family: var(--font); font-size: 13px; font-weight: 700; border: none; cursor: pointer; transition: all .2s; border-radius: 2px; box-shadow: 0 8px 28px rgba(0,229,160,0.18); }
+.price-btn:hover { opacity: .88; transform: translateY(-1px); }
+.price-btn.ghost { background: transparent; border: 1px solid rgba(0,229,160,.2); color: var(--green); box-shadow: none; }
+.price-btn.ghost:hover { border-color: var(--green); background: rgba(0,229,160,.05); }
+
+/* ── CTA ── */
+.cta-title { font-size: 52px; font-weight: 800; letter-spacing: -2px; color: #fff; line-height: 1.1; margin-bottom: 20px; max-width: 680px; border-left: 4px solid var(--green); padding-left: 28px; }
+.cta-sub { font-size: 16px; font-weight: 400; color: var(--muted-d); margin-bottom: 48px; line-height: 1.75; padding-left: 32px; }
+.cta-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+
+/* ── FOOTER ── */
+footer { background: var(--dark-2); padding: 44px 60px; border-top: 1px solid var(--border-d); }
+.footer-inner { max-width: 1140px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+.footer-logo { font-size: 22px; font-weight: 800; color: #fff; display: inline-flex; align-items: baseline; }
+.footer-logo .vita { letter-spacing: -1.2px; }
+.footer-logo .id { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: inline-block; letter-spacing: 0; padding: 3px 4px 3px 0; margin-top: -3px; }
+.footer-tag { font-size: 11px; font-weight: 500; color: var(--muted-d); margin-top: 3px; }
+.footer-copy { font-size: 11px; font-weight: 400; color: rgba(255,255,255,.2); }
+.footer-line { height: 1.5px; background: var(--grad); margin-top: 44px; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes blink { 0%,100%{opacity:1}50%{opacity:.25} }
+@keyframes wave { 0%,100%{height:5px}50%{height:18px} }
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity .65s ease, transform .65s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="logo-mark" href="#">
+    <span class="vt-logo" style="font-size:26px;letter-spacing:-1.5px"><span class="vt-vita">vita</span><span class="vt-id">id</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="#produtos">Produtos</a>
+    <a href="#como-funciona">Como funciona</a>
+    <a href="#para-quem">Para quem</a>
+    <a href="#precos">Preços</a>
+    <a href="#precos" class="nav-cta">Começar agora</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow glow1"></div>
+  <div class="hero-glow glow2"></div>
+  <div class="hero-glow glow3"></div>
+  <div class="hero-tag"><span></span>Saúde · Dados · Longevidade<span></span></div>
+  <div style="margin-bottom:36px;animation:fadeUp .7s .08s both">
+    <span class="vt-logo" style="font-size:86px;letter-spacing:-5px"><span class="vt-vita">vita</span><span class="vt-id">id</span></span>
+  </div>
+  <h1 class="hero-headline">
+    Sua saúde,<br>
+    <span class="hl">centralizada.</span>
+  </h1>
+  <p class="hero-sub">A plataforma que devolve ao médico o tempo de cuidar — e coloca o paciente no centro dos seus próprios dados.</p>
+  <div class="hero-actions">
+    <a href="#produtos" class="btn-grad">Conhecer os produtos →</a>
+    <a href="#como-funciona" class="btn-outline-d">Ver como funciona</a>
+  </div>
+  <div class="hero-line"></div>
+</section>
+
+<!-- PROBLEMA -->
+<section class="sec-dark" id="problema">
+  <div class="inner">
+    <div class="eyebrow reveal">O problema</div>
+    <h2 class="sec-title reveal">A consulta médica<br>está quebrada.</h2>
+    <p class="sec-sub reveal">De cada 30 minutos, 20 são gastos com burocracia. O médico decide sem contexto. O paciente repete tudo do zero.</p>
+    <div class="prob-grid reveal">
+      <div class="prob-cell">
+        <div class="prob-num accent">20</div>
+        <div class="prob-title">minutos perdidos por consulta</div>
+        <div class="prob-desc">O médico gasta ⅔ do tempo coletando informações básicas que poderiam estar respondidas antes de você entrar.</div>
+      </div>
+      <div class="prob-cell">
+        <div class="prob-num" style="color:#fff">∞</div>
+        <div class="prob-title">vezes que você repete seus dados</div>
+        <div class="prob-desc">Cada nova clínica, cada novo médico, cada laboratório — as mesmas perguntas. Nome, plano, alergias, medicamentos.</div>
+      </div>
+      <div class="prob-cell">
+        <div class="prob-num accent">0</div>
+        <div class="prob-title">lugar centralizado para seus dados</div>
+        <div class="prob-desc">Seus exames estão espalhados em e-mails, PDFs e apps de laboratório. Seu histórico se perde a cada mudança.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUTOS -->
+<section class="sec-dark2" id="produtos">
+  <div class="inner">
+    <div class="eyebrow reveal">Nossos produtos</div>
+    <h2 class="sec-title reveal">Dois produtos.<br>Um ecossistema.</h2>
+    <p class="sec-sub reveal">Projetados para se conectar: o médico envia, o paciente preenche, o sistema entrega contexto.</p>
+    <div class="prod-grid">
+      <div class="prod-card reveal">
+        <div class="prod-num">01 · Para médicos</div>
+        <h3 class="prod-name">Pré-Consulta<br>+ One Minute Summary</h3>
+        <p class="prod-tagline">Envie um link antes da consulta. O paciente preenche no celular. Você chega sabendo tudo — em 60 segundos de áudio gerado por IA.</p>
+        <div class="prod-feats">
+          <div class="prod-feat"><div class="feat-check">✓</div>Link via WhatsApp em segundos</div>
+          <div class="prod-feat"><div class="feat-check">✓</div>Resumo em áudio — One Minute Summary</div>
+          <div class="prod-feat"><div class="feat-check">✓</div>Alertas de alergias e medicamentos críticos</div>
+          <div class="prod-feat"><div class="feat-check">✓</div>Contexto de vida que o paciente não conta</div>
+          <div class="prod-feat"><div class="feat-check">✓</div>Perguntas sugeridas pela IA para a consulta</div>
+        </div>
+        <div class="prod-price">R$19,90/mês · até 100 pacientes</div>
+      </div>
+      <div class="prod-card reveal">
+        <div class="prod-num">02 · Para pacientes</div>
+        <h3 class="prod-name">RG da Saúde</h3>
+        <p class="prod-tagline">Preenche uma vez. Usa para sempre. Um QR Code com tudo que qualquer médico, clínica ou laboratório precisa saber sobre você.</p>
+        <div class="prod-feats">
+          <div class="prod-feat"><div class="feat-check">✓</div>QR Code escaneável em qualquer atendimento</div>
+          <div class="prod-feat"><div class="feat-check">✓</div>Upload de exames — IA estrutura automaticamente</div>
+          <div class="prod-feat"><div class="feat-check">✓</div>Alergias, medicamentos e dados de emergência</div>
+          <div class="prod-feat"><div class="feat-check">✓</div>Apple Wallet e Google Wallet</div>
+          <div class="prod-feat"><div class="feat-check">✓</div>Controle total de quem acessa seus dados</div>
+        </div>
+        <div class="prod-price">R$4,99 · pagamento único</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section class="sec-dark" id="como-funciona">
+  <div class="inner">
+    <div class="eyebrow reveal">Como funciona</div>
+    <h2 class="sec-title reveal" style="margin-bottom:80px">Simples para os dois lados.</h2>
+
+    <!-- MOCKUP 1 -->
+    <div class="mock-row reveal">
+      <div class="mock-text">
+        <div class="mock-step">Para o médico · Passo 1</div>
+        <h3 class="mock-title">Chegue preparado.<br>Em 60 segundos.</h3>
+        <p class="mock-desc">Antes de cada consulta, você recebe um resumo em áudio gerado pela IA — alertas críticos, contexto de vida e perguntas sugeridas. Você já sabe o que importa antes de o paciente entrar.</p>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-body">
+            <div class="ph-header">
+              <div class="ph-label">One Minute Summary</div>
+              <div class="ph-name">Marcos Oliveira</div>
+              <div class="ph-meta">34 anos · Consulta 14h00 · Endocrinologia</div>
+            </div>
+            <div class="ph-alert">
+              <div class="ph-alert-label">⚠ Atenção antes de entrar</div>
+              <div class="ph-alert-text">Alergia: <strong>Dipirona</strong> · Creatina há 3 semanas</div>
+            </div>
+            <div class="ph-player">
+              <div class="ph-player-label"><div class="ph-dot"></div>Resumo gerado pela IA vitaid</div>
+              <div class="ph-wave" id="wv"></div>
+              <div class="ph-progress"><div class="ph-prog-fill"></div></div>
+              <div class="ph-times"><span>0:39</span><span>1:00</span></div>
+              <div class="ph-controls">
+                <div class="ph-ctrl">⏮</div>
+                <div class="ph-ctrl play">▶</div>
+                <div class="ph-ctrl">⏭</div>
+              </div>
+            </div>
+            <div class="ph-cards">
+              <div class="ph-card">
+                <div class="ph-card-label">Queixa principal</div>
+                <div class="ph-card-val"><span class="ph-tag t-warn">⚠ Fadiga há 3 sem</span> <span class="ph-tag t-ok">✓ Sem dor</span></div>
+              </div>
+              <div class="ph-card">
+                <div class="ph-card-label">Contexto que ele não vai te contar</div>
+                <div class="ph-card-val">😴 Sono 5–6h ⚠ · ☕ 3+ cafés · Estresse alto</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOCKUP 2 -->
+    <div class="mock-row rev reveal">
+      <div class="mock-text">
+        <div class="mock-step">Para o paciente · Produto 02</div>
+        <h3 class="mock-title">Preenche uma vez.<br>Usa para sempre.</h3>
+        <p class="mock-desc">Seus dados de saúde num único lugar. QR Code que qualquer clínica, hospital ou laboratório pode escanear. Alergias, medicamentos e dados de emergência — sempre acessíveis.</p>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone" style="background:var(--light)">
+          <div class="phone-notch" style="background:#E8EBF0"></div>
+          <div class="phone-body ph-rg-screen">
+            <div class="ph-rg-header">
+              <div class="ph-rg-brand">VITAID · RG DA SAÚDE</div>
+              <div class="ph-rg-name">Daniel Silva</div>
+              <div class="ph-rg-id">RG-SP · 047.832.901-15</div>
+              <div class="ph-rg-meta">
+                <div class="ph-rg-mi">Tipo sanguíneo<span>O+</span></div>
+                <div class="ph-rg-mi">Idade<span>30 anos</span></div>
+                <div class="ph-rg-mi">Status<span style="color:#00C882">● Ativo</span></div>
+              </div>
+            </div>
+            <button class="ph-rg-btn">🔲 Mostrar QR Code</button>
+            <div class="ph-rg-secs">
+              <div class="ph-rg-alert"><div class="ph-rg-ak">🚨 Alergia crítica</div><div class="ph-rg-av">Dipirona</div></div>
+              <div class="ph-rg-sec"><div class="ph-rg-sec-title">Medicamentos</div><div class="ph-rg-row">Creatina<span>3x/semana</span></div><div class="ph-rg-row">Ômega-3<span>1x ao dia</span></div></div>
+              <div class="ph-rg-sec"><div class="ph-rg-sec-title">Histórico familiar</div><div class="ph-rg-row">Hipertensão<span>Pai</span></div><div class="ph-rg-row">Diabetes<span>Avó</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FILOSOFIA -->
+<section class="sec-dark2">
+  <div class="inner">
+    <div class="eyebrow reveal">Nossa filosofia</div>
+    <blockquote class="phil-quote reveal">"As pessoas não sabem o que querem<br>até que você <em>mostre a elas.</em>"</blockquote>
+    <p class="phil-attr reveal">Metodologia vitaid · Inspirada na Apple</p>
+    <div class="phil-grid reveal">
+      <div class="phil-cell"><div class="phil-icon">🧭</div><div class="phil-title">Educamos, não perguntamos</div><div class="phil-desc">Ninguém pediria um "RG da Saúde". Mas quando veem, entendem imediatamente por que precisam.</div></div>
+      <div class="phil-cell"><div class="phil-icon">🔒</div><div class="phil-title">Seus dados são seus</div><div class="phil-desc">Você decide quem acessa, quando e por quanto tempo. LGPD no centro do produto.</div></div>
+      <div class="phil-cell"><div class="phil-icon">⚡</div><div class="phil-title">Simples por fora, poderoso por dentro</div><div class="phil-desc">Interface que qualquer pessoa usa. IA que entrega insight médico em segundos.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="sec-dark3">
+  <div class="stats-grid reveal">
+    <div class="stat-cell"><div class="stat-num">20<span class="unit">min</span></div><div class="stat-label">economizados por consulta com a pré-consulta</div></div>
+    <div class="stat-cell"><div class="stat-num">1<span class="unit">×</span></div><div class="stat-label">você preenche seus dados. Para sempre.</div></div>
+    <div class="stat-cell"><div class="stat-num">60<span class="unit">s</span></div><div class="stat-label">para o médico conhecer o paciente</div></div>
+    <div class="stat-cell"><div class="stat-num">100<span class="unit">%</span></div><div class="stat-label">dos seus dados sob seu controle</div></div>
+  </div>
+</section>
+
+<!-- PARA QUEM -->
+<section class="sec-light" id="para-quem">
+  <div class="inner">
+    <div class="eyebrow light-version reveal">Para quem é</div>
+    <h2 class="sec-title light-version reveal">Dois lados.<br>Uma solução.</h2>
+    <div class="who-grid">
+      <div class="who-card reveal">
+        <div class="who-role">🩺 Para médicos</div>
+        <h3 class="who-title">Você que quer usar a consulta para tratar, não cadastrar</h3>
+        <div class="who-list">
+          <div class="who-item"><span class="who-arr">→</span>Você gasta mais de 15 minutos coletando informações básicas</div>
+          <div class="who-item"><span class="who-arr">→</span>Você não sabe o histórico completo antes de o paciente entrar</div>
+          <div class="who-item"><span class="who-arr">→</span>Você precisa de contexto de vida para diagnosticar melhor</div>
+          <div class="who-item"><span class="who-arr">→</span>Você quer saber sobre alergias antes de prescrever qualquer coisa</div>
+        </div>
+      </div>
+      <div class="who-card reveal">
+        <div class="who-role">🪪 Para pacientes</div>
+        <h3 class="who-title">Você que quer seus dados de saúde na palma da mão</h3>
+        <div class="who-list">
+          <div class="who-item"><span class="who-arr">→</span>Você cansa de repetir as mesmas informações em cada consultório</div>
+          <div class="who-item"><span class="who-arr">→</span>Você não sabe onde estão seus exames quando mais precisa</div>
+          <div class="who-item"><span class="who-arr">→</span>Você quer que em emergência alguém saiba suas alergias</div>
+          <div class="who-item"><span class="who-arr">→</span>Você quer que sua consulta seja sobre você, não sobre o formulário</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PREÇOS -->
+<section class="sec-dark" id="precos">
+  <div class="inner">
+    <div class="eyebrow reveal">Preços</div>
+    <h2 class="sec-title reveal">Simples e acessível.</h2>
+    <p class="sec-sub reveal">Sem surpresas. Sem anuidades escondidas.</p>
+    <div class="price-grid">
+      <div class="price-card reveal">
+        <div class="price-for">Para médicos</div>
+        <div class="price-prod">Pré-Consulta + One Minute Summary</div>
+        <div class="price-val">R$19<small>,90</small></div>
+        <div class="price-period">por mês · até 100 pacientes ativos</div>
+        <div class="price-feats">
+          <div class="price-feat">Pré-consultas ilimitadas</div>
+          <div class="price-feat">One Minute Summary em áudio com IA</div>
+          <div class="price-feat">Alertas clínicos e sugestões de perguntas</div>
+          <div class="price-feat">Dashboard de pacientes do dia</div>
+          <div class="price-feat">Link via WhatsApp automático</div>
+        </div>
+        <button class="price-btn">Começar grátis por 30 dias</button>
+      </div>
+      <div class="price-card reveal">
+        <div class="price-for">Para pacientes</div>
+        <div class="price-prod">RG da Saúde</div>
+        <div class="price-val">R$4<small>,99</small></div>
+        <div class="price-period">pagamento único · para sempre</div>
+        <div class="price-feats">
+          <div class="price-feat">QR Code com todos os seus dados</div>
+          <div class="price-feat">Upload e organização de exames por IA</div>
+          <div class="price-feat">Dados de emergência de acesso rápido</div>
+          <div class="price-feat">Apple Wallet e Google Wallet</div>
+          <div class="price-feat">Controle total de quem acessa</div>
+        </div>
+        <button class="price-btn ghost">Criar meu RG da Saúde</button>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:22px;font-size:12px;color:rgba(255,255,255,.2);font-weight:400">Pacientes via link do médico criam o RG da Saúde gratuitamente.</p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="sec-dark2">
+  <div class="inner">
+    <div class="eyebrow reveal">Comece hoje</div>
+    <h2 class="cta-title reveal">A melhor consulta começa<br>antes de você entrar.</h2>
+    <p class="cta-sub reveal">Junte-se aos médicos que estão transformando a experiência de saúde dos seus pacientes.</p>
+    <div class="cta-btns reveal">
+      <a href="#" class="btn-grad">Sou médico — quero testar grátis →</a>
+      <a href="#" class="btn-outline-d">Sou paciente — criar meu RG</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <span class="vt-logo" style="font-size:22px;letter-spacing:-1.2px"><span class="vt-vita">vita</span><span class="vt-id">id</span></span>
+      <div class="footer-tag">Sua saúde. Centralizada.</div>
+    </div>
+    <div class="footer-copy">© 2026 vitaid · Todos os direitos reservados · LGPD</div>
+  </div>
+  <div class="footer-line"></div>
+</footer>
+
+<script>
+// Waveform
+const wv = document.getElementById('wv');
+if (wv) {
+  for (let i = 0; i < 30; i++) {
+    const b = document.createElement('div');
+    const h = Math.floor(Math.random() * 16 + 3);
+    b.className = 'ph-bar' + (i >= 11 && i <= 21 ? ' active' : '');
+    b.style.height = h + 'px';
+    b.style.animationDelay = (i * .05) + 's';
+    wv.appendChild(b);
+  }
+}
+// Reveal
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 65);
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+// Nav
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').style.background = window.scrollY > 40
+    ? 'rgba(13,15,20,0.97)' : 'rgba(13,15,20,0.88)';
+});
+</script>
+</body>
+</html>
